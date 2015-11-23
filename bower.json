@@ -1,0 +1,33 @@
+{
+  "name": "bt-cal-detail",
+  "version": "0.0.1",
+  "authors": [
+    "Tyler Beatty <tbeatty.sk@gmail.com>"
+  ],
+  "description": "An element to be opened with bt-cal-date to show more details about a date on a calendar.",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer"
+  ],
+  "main": "bt-cal-detail.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/tbeattysk/bt-cal-detail",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "paper-material": "PolymerElements/paper-material",
+    "iron-flex-layout":"PolymerElements/iron-flex-layout",
+    "neon-animation": "PolymerElements/neon-animation"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*",
+    "bt-cal-date": "bt-cal-date#^0.0.1"
+  }
+}
+
