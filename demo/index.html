@@ -14,40 +14,216 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>seed-element Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../paper-styles/typography.html">
     <link rel="import" href="../../neon-animation/neon-animated-pages.html">
+    <link rel="import" href="../../neon-animation/neon-animations.html">
+    
     <link rel="import" href="../bt-cal-detail.html">
+    <link rel="import" href="../../bt-cal-grid/bt-cal-grid.html">
     <link rel="import" href="../../bt-cal-date/bt-cal-date.html">
+
+    <style is="custom-style">
+      body {
+        font-family: 'roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        overflow: hidden;
+      }
+      neon-animated-pages {
+        height: 100%;
+      }
+      bt-cal-grid{
+        position: relative;
+      }
+    </style>
   </head>
   <body>
-
-    <p>An example of <code>&lt;bt-cal-detail&gt;</code>:</p>
-    <template id="page-template" is="dom-bind">
-      <neon-animated-pages selected="[[selected]]">
-        <bt-cal-date on-click="c">
-          <h1>12</h1>
-          <h2>la</h2>
-          <div></div>
-        </bt-cal-date>
-
-        <bt-cal-detail>
-          Hello World
-        </bt-cal-detail>
-      </neon-animated-pages>
-    
-
-      
-    </template>
-
+      <p>An example of <code>&lt;bt-cal-detail&gt;</code>:</p>
+      <template id="page-template" is="dom-bind">
+        <neon-animated-pages id="pages" selected="0">
+          <bt-cal-grid on-cal-click="_onCalClick">
+            <template is="dom-repeat" items="{{days}}" as="d">
+              <bt-cal-date id="{{index}}">
+                <h1>{{d.day}}</h1>
+                <h2>{{d.title}}</h2>
+                <div>{{d.desc}}</div>
+              </bt-cal-date>
+            </template>
+          </bt-cal-grid>
+          <template is="dom-repeat" items="{{days}}" as="d">
+            <bt-cal-detail on-detail-click="_onDetailClick">
+              <h1>November {{d.day}}, 2015</h1>
+            </bt-cal-detail>
+          </template>
+        </neon-animated-pages>  
+      </template>
+     
 
     <script>
-       var template = document.querySelector('#page-template');
-       template.selected = 0;
-       template.c = function(){
-        this.selected = 1
-       }
-       document.addEventListener('closeMe', function(){
-        template.selected = 0;
-       })
+      var template = document.querySelector('#page-template');
+      template._onDetailClick = function(event){
+        this.$.pages.selected = 0;
+      }
+      template._onCalClick = function(event){
+        this.$.pages.selected = event.detail;
+      };
+      template.properties ={
+        days:{
+        type: Array,
+        notify: true,
+        value: [
+        {
+          "date": "2015-10-25T16:00:00.000Z",
+          "day": 26,
+          "title": "Now",
+          "time": 1445788800000
+        },
+        {
+          "date": "2015-10-26T16:00:00.000Z",
+          "day": 27,
+          "time": 1445875200000
+        },
+        {
+          "date": "2015-10-27T16:00:00.000Z",
+          "day": 28,
+          "time": 1445961600000
+        },
+        {
+          "date": "2015-10-28T16:00:00.000Z",
+          "day": 29,
+          "time": 1446048000000
+        },
+        {
+          "date": "2015-10-29T16:00:00.000Z",
+          "day": 30,
+          "time": 1446134400000
+        },
+        {
+          "date": "2015-11-01T16:00:00.000Z",
+          "day": 2,
+          "time": 1446393600000
+        },
+        {
+          "date": "2015-11-02T16:00:00.000Z",
+          "day": 3,
+          "time": 1446480000000
+        },
+        {
+          "date": "2015-11-03T16:00:00.000Z",
+          "day": 4,
+          "time": 1446566400000
+        },
+        {
+          "date": "2015-11-04T16:00:00.000Z",
+          "day": 5,
+          "time": 1446652800000
+        },
+        {
+          "date": "2015-11-05T16:00:00.000Z",
+          "day": 6,
+          "time": 1446739200000
+        },
+        {
+          "date": "2015-11-08T16:00:00.000Z",
+          "day": 9,
+          "time": 1446998400000
+        },
+        {
+          "date": "2015-11-09T16:00:00.000Z",
+          "day": 10,
+          "time": 1447084800000
+        },
+        {
+          "date": "2015-11-10T16:00:00.000Z",
+          "day": 11,
+          "time": 1447171200000
+        },
+        {
+          "date": "2015-11-11T16:00:00.000Z",
+          "day": 12,
+          "time": 1447257600000
+        },
+        {
+          "date": "2015-11-12T16:00:00.000Z",
+          "day": 13,
+          "time": 1447344000000
+        },
+        {
+          "date": "2015-11-15T16:00:00.000Z",
+          "day": 16,
+          "time": 1447603200000
+        },
+        {
+          "date": "2015-11-16T16:00:00.000Z",
+          "day": 17,
+          "time": 1447689600000
+        },
+        {
+          "date": "2015-11-17T16:00:00.000Z",
+          "day": 18,
+          "time": 1447776000000
+        },
+        {
+          "date": "2015-11-18T16:00:00.000Z",
+          "day": 19,
+          "time": 1447862400000
+        },
+        {
+          "date": "2015-11-19T16:00:00.000Z",
+          "day": 20,
+          "time": 1447948800000
+        },
+        {
+          "date": "2015-11-22T16:00:00.000Z",
+          "day": 23,
+          "time": 1448208000000
+        },
+        {
+          "date": "2015-11-23T16:00:00.000Z",
+          "day": 24,
+          "time": 1448294400000
+        },
+        {
+          "date": "2015-11-24T16:00:00.000Z",
+          "day": 25,
+          "time": 1448380800000
+        },
+        {
+          "date": "2015-11-25T16:00:00.000Z",
+          "day": 26,
+          "time": 1448467200000
+        },
+        {
+          "date": "2015-11-26T16:00:00.000Z",
+          "day": 27,
+          "time": 1448553600000
+        },
+        {
+          "date": "2015-11-29T16:00:00.000Z",
+          "day": 30,
+          "time": 1448812800000
+        },
+        {
+          "date": "2015-11-30T16:00:00.000Z",
+          "day": 1,
+          "time": 1448899200000
+        },
+        {
+          "date": "2015-12-01T16:00:00.000Z",
+          "day": 2,
+          "time": 1448985600000
+        },
+        {
+          "date": "2015-12-02T16:00:00.000Z",
+          "day": 3,
+          "time": 1449072000000
+        },
+        {
+          "date": "2015-12-03T16:00:00.000Z",
+          "day": 4,
+          "time": 1449158400000
+        }
+      ],
+    }
+      }
     </script>
 
   </body>

@@ -10,15 +10,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 
 <link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
-<link rel="import" href="../neon-animation/neon-animatable-behavior.html">
-<link rel="import" href="../neon-animation/animations/scale-up-animation.html">
-<link rel="import" href="../neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../neon-animation/neon-shared-element-animatable-behavior.html">
 
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-material/paper-material.html">
 <!--
 An element to be opened with bt-cal-date to show more details about a date on a calendar.
 
 Example:
+
     <bt-cal-date>
       <h1>1</h1>
       <h2>Title</h2>
@@ -28,28 +29,73 @@ Example:
     <bt-cal-detail>
       ...content...
     </bt-cal-detail>
-
 @demo
 -->
 <dom-module id="bt-cal-detail">
-
-  <style>
+  <style is="custom-style">
+    body {
+      font-family: 'roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
     :host {
       display: block;
-      box-sizing: border-box;
-      width: 600px;
-      height: 900px;
     }
+
+     paper-card {
+      width: 100%;
+      background-color: rgb(250,250,250);
+    }
+    paper-material {
+     background-color: rgb(216,216,216);
+     height: 90vh;
+    }
+    .header{
+      margin-top: 10px;
+      border-bottom: black;
+      border-bottom-width: 1px;
+      border-bottom-style: groove;
+    }
+    #card {
+        position: relative;
+        margin: 10vh 100px 0;
+        height: 70vh;
+      }
+    #cards{
+     margin: 20px 50px 0;
+    }
+    #fixed {
+        position: fixed;
+        background-color: rgb(160,178,178);
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+      }
   </style>
 
   <template>
-  <paper-material elevation="1">
+    <div id="fixed"></div>
+    <div id="card">
+      <paper-material class="layout vertical" elevation="3">
+        <div class="header horizontal layout">
+          <paper-button  on-click="closeMe">
+            <--
+          </paper-button>
+          <span class="flex">
+             <div id="dates"><content select = "h1"></content></div>
+          </span>
+        </div>
+        <div id="cards">
+          <paper-card heading="Card Title">
+            <div class="card-content">Some content</div>
+            <div class="card-actions">
+              <paper-button>Some action</paper-button>
+            </div>
+          </paper-card>
+        </div>
+        
+      </paper-material>
+    </div>
     
-
-    <button on-click="closeMe"> Close </button>
-    <content>
-   </content>
-   </paper-material>
   </template>
 
 </dom-module>
@@ -60,25 +106,56 @@ Example:
 
     is: 'bt-cal-detail',
 
-    behaviors: [Polymer.NeonAnimatableBehavior],
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
     properties: {
-      animationConfig:{
-        value:function(){
-          return{
-            'entry':{
-              name:'scale-up-animation',
-              node: this
-            },
-            'exit':{
+      dateIndex:{
+        type: Number,
+        value: 0,
+        reflectToAttribute: true,
+      },
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': this.$.card
+          }
+        },
+      },
+      animationConfig: {
+        value: function() {
+          return {
+           'entry': [{
+              name: 'fade-in-animation',
+              node: this.$.fixed
+            },{
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing:{
+                delay: 150
+              }
+            }],
+            'exit': [{
               name:'fade-out-animation',
-              node: this
-            }
+              node: this.$.fixed,
+            }, {
+              name: 'transform-animation',
+              transformFrom: 'none',
+              transformTo: 'translate(0px,-200vh) scale(0.9,1)',
+              node: this.$.card,
+            }]
           }
         }
       }
-      },
+    },
+    ready: function(){
+      console.log("hi");
+    },
     closeMe: function(e, detail){
-      this.fire('closeMe');
+      this.fire('detail-click');
     },
   });
 
