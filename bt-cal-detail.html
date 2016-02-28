@@ -10,7 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 
 <link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
-<link rel="import" href="../neon-animation/neon-shared-element-animatable-behavior.html">
 
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../paper-button/paper-button.html">
@@ -44,56 +43,36 @@ Example:
       width: 100%;
       background-color: rgb(250,250,250);
     }
-    paper-material {
-     background-color: rgb(216,216,216);
-     height: 90vh;
-    }
     .header{
-      margin-top: 10px;
       border-bottom: black;
       border-bottom-width: 1px;
       border-bottom-style: groove;
     }
     #card {
-        position: relative;
-        margin: 10vh 100px 0;
-        height: 70vh;
+
       }
     #cards{
-     margin: 20px 50px 0;
     }
-    #fixed {
-        position: fixed;
-        background-color: rgb(160,178,178);
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 100vw;
-      }
+
   </style>
 
   <template>
-    <div id="fixed"></div>
     <div id="card">
-      <paper-material class="layout vertical" elevation="3">
         <div class="header horizontal layout">
           <paper-button  on-click="closeMe">
-            <--
           </paper-button>
           <span class="flex">
-             <div id="dates"><content select = "h1"></content></div>
+             <div id="dates"><h1>{{data.month}} {{data.day}}, {{data.year}}</h1></div>
           </span>
         </div>
         <div id="cards">
-          <paper-card heading="Card Title">
-            <div class="card-content">Some content</div>
-            <div class="card-actions">
-              <paper-button>Some action</paper-button>
-            </div>
-          </paper-card>
+          <template is="dom-repeat" items="[[data.events]]" as="event">
+            <paper-card heading="[[event.title]]">
+              <div class="card-content">[[event.detail]]</div>
+              </div>
+            </paper-card>
+          </template>
         </div>
-        
-      </paper-material>
     </div>
     
   </template>
@@ -106,57 +85,35 @@ Example:
 
     is: 'bt-cal-detail',
 
-    behaviors: [
-      Polymer.NeonSharedElementAnimatableBehavior
-    ],
-
     properties: {
+      data:{
+        type: Object,
+        notify: true,
+        value:{month:"lk;j",day:"3",year:"2015"}
+      },
       dateIndex:{
         type: Number,
         value: 0,
         reflectToAttribute: true,
       },
-      sharedElements: {
-        type: Object,
-        value: function() {
-          return {
-            'hero': this.$.card
-          }
-        },
-      },
-      animationConfig: {
-        value: function() {
-          return {
-           'entry': [{
-              name: 'fade-in-animation',
-              node: this.$.fixed
-            },{
-              name: 'hero-animation',
-              id: 'hero',
-              toPage: this,
-              timing:{
-                delay: 150
-              }
-            }],
-            'exit': [{
-              name:'fade-out-animation',
-              node: this.$.fixed,
-            }, {
-              name: 'transform-animation',
-              transformFrom: 'none',
-              transformTo: 'translate(0px,-200vh) scale(0.9,1)',
-              node: this.$.card,
-            }]
-          }
-        }
-      }
     },
+
     ready: function(){
-      console.log("hi");
+      document.addEventListener('cal-click', this.setData.bind(this));
     },
+
+    setData: function(){
+      console.log(this.data)
+    },
+
+    _changeDetail: function(){
+      console.log("asdf")
+    },
+
     closeMe: function(e, detail){
       this.fire('detail-click');
     },
+
   });
 
 </script>
